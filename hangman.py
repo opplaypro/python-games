@@ -1,129 +1,185 @@
+# -*- coding: utf-8 -*-
 import random
 import os
+import time
 
 os.system('cls')
 
-#open file and create variables
-word_list_eng = open('words_alpha.txt', 'r')
-all_words_eng = word_list_eng.read().splitlines()
-playable_words = []
-guessed_letters_word = []
-already_guessed_letters = []
-guessed = False
-hp_left = 10
-is_single_letter = True
-guessed_word_word = ""
-is_in_word = False
-chosen_word = ""
-len_min = 0
-len_max = 0
-
-
-
-
 #get random word to guess
-def get_random_word(word_list_chosen_lang,len_min,len_max):
-    global guessed_letters_word
-    for i000 in all_words_eng:
-        if len_min <= len(i000) <= len_max:
-            word_list_chosen_lang.append(i000)
+def get_random_word(word_list_chosen_lang , length_min , length_max):
+    playable_words = []
+    guessed_letters = []
+    for i in word_list_chosen_lang:
+        if length_min <= len( i ) <= length_max:
+            playable_words.append(i)
     rand_word = random.choice(playable_words)
-    for i001 in range(len(rand_word)):
-        guessed_letters_word.append("_")        #create string with length len(rand_word) and '_' on each letter
-    return rand_word
-
-
-#function to check if guessed letter is in random word
-def check_letter(letter,word):
-    global is_in_word
-    global guessed_letters_word
-    global is_in_word
-    global hp_left
-    global already_guessed_letters
-    place = 0
-    for i002 in word:
-        place += 1
-        if i002 == letter:
-            guessed_letters_word[place-1] = letter      #replace '_' with guessed letter at correct place
-            is_in_word = True
-    if not is_in_word:
-        print ("This letter is not in this word")
-        hp_left = hp_left - 1
-    else:
-        print("This letter is in this word")
-    if is_in_word:
-        is_in_word = False
+    for i in range( len( rand_word ) ):
+        guessed_letters.append("_")        #create string with length len(rand_word) and '_' on each letter
+    return rand_word, guessed_letters
 
 
 #choose lang
 def choose_lang():
-    lang = input("Choose language: \n1. English\n2. Polish\nENTER NUMBER: ")
-    if lang == "1":
-        return("EN")
-    elif lang == "2":
-        return("PL")
-    else:
-        print("Wrong input! Try again")
-        choose_lang()
+    while True:
+        lang = input("Choose language: \n1. English (English)\n2. Polish (Polski)\nENTER NUMBER (WPISZ NUMER): ")
+        if lang == "1":
+            return "EN"
+        elif lang == "2":
+            print("Uwaga!!! Wśród słów znajdują się też odmiany przez przypadki!!! weż to pod uwagę!") #only in polish, weird lang
+            time.sleep(3)
+            os.system("cls")
+            return "PL"
+        else:
+            os.system("cls")
+            print("Wrong input! Try again")
 
 
 #choose min and max word length
-def choose_len():
-    if chosen_lang == "EN":
-        len_min = input("Choose minimum word length: ")
-        len_max = input("Choose maximum word length: ")
-        return(len_min,len_max)
-    elif chosen_lang == "PL":
-        len_min = input("Wybierz minimalną długość słowa: ")
-        len_max = input("Wybierz maksymalną długość słowa: ")
-        return(len_min,len_max)
+def choose_len(lang_lang):
+    while True:
+        if lang_lang == "EN":
+            length_min = input("Choose minimum word length (recommended 5): ")
+            length_max = input("Choose maximum word length (recommended 12): ")
+            try:
+                int(length_min)
+                int(length_max)
+            except ValueError:
+                print("Wrong input! Try again")
+            else:
+                length_min = int(length_min)
+                length_max = int(length_max)
+                if length_min>length_max:
+                    print("Wrong input! Try again")
+                else:
+                    return length_min, length_max
+        elif lang_lang == "PL":
+            length_min = input("Wybierz minimalną długość słowa (zalecana to 5): ")
+            length_max = input("Wybierz maksymalną długość słowa (zalecana to 12): ")
+            try:
+                int(length_min)
+                int(length_max)
+            except ValueError:
+                print("Błedne dane! Spróbuj ponownie!")
+            else:
+                length_min = int(length_min)
+                length_max = int(length_max)
+                if length_min>length_max:
+                    print("Błędne dane! Spróbuj ponownie!")
+                else:
+                    return length_min, length_max
 
 
 # open file with words of chosen language
-def open_file():
-    1
+def open_file(language):
+    if language == "EN":
+        list_all = open('words_EN.txt','r', encoding="utf-8")
+        words = list_all.read().splitlines()
+        return words
+    elif language == "PL":
+        list_all = open('words_PL.txt','r', encoding="utf-8")
+        words = list_all.read().splitlines()
+        return words
 
 
-def game():
-    global chosen_lang
-    global len_min
-    global len_max
+# main function of the game
+def game_run():
     print("Welcome to Hangman!")
-     chosen_lang = choose_lang()
-    len_min, len_max = choose_len()
+    lang_lang = choose_lang()
+    len_min , len_max = choose_len(lang_lang)
+    word_list = open_file(lang_lang)
+    random_word,guesses_letters_word =  get_random_word(word_list, len_min, len_max)
+    game_main_loop(lang_lang, random_word, guesses_letters_word)
+    print("Thanks for playing! See you next time!")
 
 
-
-
-
-#main game
-random_word = get_random_word()
-print ("Welcome in hangman!\nRandom word with length:",len(random_word),
-       "has been chosen\nYour goal is to guess this word!\nEnter 'exit' to quit")
-while not guessed:
-    if hp_left == 0:
-        print("sorry you lost :( better luck next time!")
-        print("The word was:" , random_word)
-        break
-    guess_letter = input("Enter the letter you want to guess: ")
-    if guess_letter == "exit":
-        break
-    os.system('cls')
-    print("You guessed: ","'"+guess_letter+"'")
-    if len(guess_letter) == 1 and not guess_letter in already_guessed_letters:
-        check_letter(guess_letter, random_word)
-        already_guessed_letters.append(guess_letter)
-        guessed_word_word = ''.join(guessed_letters_word)
-        print("Guessed letters:",guessed_word_word,"\nRemaining lives:",hp_left)
+#main loop of the game, works till player guesses or looses
+def game_main_loop(lang_lang, word, guessed_letters_word):
+    guess_history = []
+    hp_left = 10 # if fancy, make choosable
+    while True:
+        if hp_left == 0:
+            if lang_lang == "EN":
+                print("Sorry you lost :( better luck next time! The word was:",word)
+                break
+            if lang_lang == "PL":
+                print("Przykro mi, przegrałeś :( powodzenia następnym razem! słowo to:",word)
+                break
+        guessed_letters, guess_history, hp_left = user_guess(lang_lang, word, guessed_letters_word, guess_history,hp_left)
         if "_" not in guessed_letters_word:
-            guessed = True
-        if guessed:
-            print("Congratulations! You guessed the word!")
-    else:
-        if len(guess_letter) != 1:
-            if is_single_letter:
+            if lang_lang == "EN":
+                print("You guessed the word!, it was:",word)
+                break
+            elif lang_lang == "PL":
+                print("Odgadłeś słowo! to było:",word)
+                break
+        else:
+                if lang_lang == "EN":
+                    print("Guessed letters:",''.join(guessed_letters_word))
+                elif lang_lang == "PL":
+                    print("Odgadnięte litery:",''.join(guessed_letters_word))
+
+
+# this function  gets input from user and checks if the letter is in word
+def user_guess(lang_lang, word, guessed_letters_word, history, hp):
+    if lang_lang == "EN":
+        guess_letter = input("Guess a letter: ")
+        valid = validate_guess(guess_letter,history)
+        is_letter_in_word = False
+        if valid:
+            position = 0
+            history.append(guess_letter)
+            for i in word:
+                if i == guess_letter:
+                    guessed_letters_word[position] = guess_letter
+                    is_letter_in_word = True
+                position += 1
+        else:
+            if len(guess_letter) != 1:
                 print("This is not a single letter! Try again")
-                print("Guessed letters:", guessed_word_word, "\nRemaining lives:", hp_left)
-        elif guess_letter in already_guessed_letters:
-            print("You already guessed this letter!")
-            print("Guessed letters:", guessed_word_word, "\nRemaining lives:", hp_left)
+            else:
+                print("You already guessed this letter!")
+        if is_letter_in_word:
+            print("This letter is in this word")                    #FIX!!!!
+        else:
+            hp = hp - 1
+            print("This letter is not in this word\nTries left:",hp)
+        return guessed_letters_word, history, hp
+    elif lang_lang == "PL":
+        guess_letter = input("Zgadnij literę: ")
+        valid = validate_guess(guess_letter,history)
+        is_letter_in_word = False
+        if valid:
+            position = 0
+            for i in word:
+                if i == guess_letter:
+                    guessed_letters_word[position] = guess_letter
+                    is_letter_in_word = True
+                position += 1
+        else:
+            if len(guess_letter) != 1:
+                print("To nie jest pojedyncza litera!")
+            else:
+                print("Już zgadłeś tę literę!")
+        if is_letter_in_word:
+            print("Ta litera jest w słowie")                    #FIX!!!!
+        else:
+            hp = hp - 1
+            print("Tej litery nie ma w tym słowie, pozostałe próby:",hp)
+        return guessed_letters_word , history, hp
+
+
+# checks if player already guessed that letter or input more than one letter
+def validate_guess(guess,already_guessed):
+    validated = True
+    if len(guess) > 1:
+        validated = False
+    if guess in already_guessed:
+        validated = False
+    already_guessed.append(guess)
+    return validated
+
+
+# no comment here
+if __name__ == "__main__":
+    guessed_word_word = ""
+    game_run()
