@@ -215,14 +215,14 @@ def set_bombs(diff):
 
     elif diff == 1:
         bombs_coords = [[0 for _ in range(30)] for _ in range(20)]
-        for i in range(31):
+        for i in range(120):
             x = random.randint(0, 29)
             y = random.randint(0, 19)
             bombs_coords[y][x] = 9
 
     elif diff == 2:
         bombs_coords = [[0 for _ in range(60)] for _ in range(45)]
-        for i in range(91):
+        for i in range(300):
             x = random.randint(0, 59)
             y = random.randint(0, 44)
             bombs_coords[y][x] = 9
@@ -283,7 +283,7 @@ def player_guess(grid, diff):
                 print("BŁĄD, ZŁE WSPÓŁRZĘDNE")
                 continue
             if 0 <= x <= max_x and 0 <= y <= max_y:
-                visible_grid = uncover_cells(grid, visible_grid, diff, (int(x), int(y)))
+                visible_grid, play = uncover_cells(grid, visible_grid, diff, (int(x), int(y)))
                 for i in visible_grid:
                     print(i)
             else:
@@ -294,23 +294,17 @@ def player_guess(grid, diff):
 
 
 def show_cells_near(visible_grid, diff, guess):
+    visited_cells = [guess]
     x = guess[0]
     y = guess[1]
-    horizontal = 9
-    vertical = 9
-    if True:
-        if diff == 0:
-            horizontal = 9
-            vertical = 9
+    horizontal = [9, 29, 59][diff]
+    vertical = [9, 19, 44][diff]
 
-        elif diff == 1:
-            horizontal = 29
-            vertical = 19
 
-        elif diff == 2:
-            horizontal = 59
-            vertical = 44
 
+
+    #   CODE BELOW ENTERS RECURSIVE LOOP
+    #   FIX THAT SHIT PLS
     if x == 0:
         if y == 0:
 
@@ -390,11 +384,13 @@ def uncover_cells(grid, visible_grid, diff, guess):
     y = guess[1]
     if grid[x][y] == 9:
         print("Bomba\nPrezgrałeś")
+        play = False
     else:
-        show_cells_near(visible_grid, diff, guess)
+        visible_grid = show_cells_near(visible_grid, diff, guess)
+        play = True
     for i in visible_grid:
         print(i)
-    return visible_grid
+    return visible_grid, play
 
 
 def first_interaction():
@@ -419,7 +415,7 @@ if __name__ == "__main__":
 
 
 #   below is pygame part of the code
-#   (at least i want to add it)
+#   (at least I want to add it)
 
 '''
 WIDTH = 800
