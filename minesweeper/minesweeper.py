@@ -6,9 +6,7 @@ import os
 
 # from pygame import mouse
 
-
 os.system('cls')
-
 
 '''
 changes to make (find with ctr+f):
@@ -18,17 +16,16 @@ change0001: change frame rate to 60
 change0002: change input method
 '''
 
-
 # function to choose difficulty level
 # change input method to button on UI instead of text input #change0002
 def choose_difficulty():
     while True:
-        difficulty = input("Choose diff")
-        if difficulty == "easy":
+        difficulty = input("Wybierz poziom trudności: ")
+        if difficulty.lower() in ("łatwy", "0"):
             return 0
-        elif difficulty == "medium":
+        elif difficulty.lower() in ("średni", "1"):
             return 1
-        elif difficulty == "hard":
+        elif difficulty.lower() in ("trudny", "2"):
             return 2
         elif difficulty == "KONIEC":
             break
@@ -47,9 +44,6 @@ def change_numbers(grid, x, y):
     if grid[x][y] != 9:
         grid[x][y] += 1
     return grid
-
-
-
 
 
 #   funcion sets every position to number of bombs near
@@ -371,11 +365,7 @@ def set_bombs(diff):
     return bombs_coords
 
 
-'''
-def check_if_bomb(x,y, bombs):
-    1
 
-'''
 # test if everything works !!! TERMINAL ONLY!!! NO PYGAME
 def test_script():
     player_guess(
@@ -404,13 +394,15 @@ def test_script():
 def player_guess(grid, diff):
     visible_grid = []
     play = True
-    print("Witaj w grze Saper!\nPoziom Trudności został ustawiony na: ", end="")
     if diff == 0:
-        print("Łatwy")
+        max_x = 9
+        max_y = 9
     elif diff == 1:
-        print("Średni")
+        max_x = 29
+        max_y = 19
     elif diff == 2:
-        print("Trudny")
+        max_x = 59
+        max_y = 44
     print("Współrzędne miejsca wprowadzaj w formacie 'x, y'\n")
     while play:
         guess = input("Wprowadź współrzędne: ").split(",")
@@ -421,7 +413,10 @@ def player_guess(grid, diff):
             except ValueError:
                 print("BŁĄD, ZŁE WSPÓŁRZĘDNE")
                 continue
-            uncover_cells(grid, visible_grid, diff, (int(x), int(y)))
+            if 0 <= x <= max_x and 0 <= y <= max_y:
+                visible_grid = uncover_cells(grid, visible_grid, diff, (int(x), int(y)))
+            else:
+                print("error, za dużo")
         else:
             print("error")
             continue
@@ -433,21 +428,32 @@ def uncover_cells(grid, visible_grid, diff, guess):
     x = guess[0]
     y = guess[1]
     if grid[x][y] == 9:
-        print("Bomba")
+        print("Bomba\nPrezgrałeś")
     else:
-
+        visible_grid = (grid, visible_grid, diff, (x - 1, y - 1))
+        visible_grid = (grid, visible_grid, diff, (x - 1, y))
+        visible_grid = (grid, visible_grid, diff, (x - 1, y + 1))
+        visible_grid = (grid, visible_grid, diff, (x, y - 1))
+        visible_grid = (grid, visible_grid, diff, (x, y + 1))
+        visible_grid = (grid, visible_grid, diff, (x + 1, y - 1))
+        visible_grid = (grid, visible_grid, diff, (x + 1, y))
+        visible_grid = (grid, visible_grid, diff, (x + 1, y + 1))
+        return visible_grid
         pass
 
 
-
+def first_interaction():
+    print("Witaj w grze Saper!\nJeśli pojawią się błędy, zgłoś proszę!")
 
 def game():
+    first_interaction()
     diff = choose_difficulty()
     bomb_grid = set_bombs(diff)
-    numbers_near_bombs(bomb_grid, diff)
+    bomb_grid = numbers_near_bombs(bomb_grid, diff)
+    player_guess(bomb_grid, diff)
 
 
-TESTS = True
+TESTS = 0
 
 
 if __name__ == "__main__":
