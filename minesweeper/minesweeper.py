@@ -14,6 +14,8 @@ format: change0001
 
 change0001: change frame rate to 60
 change0002: change input method
+
+for other things to fix look for comments with "TO_FIX"
 '''
 
 # function to choose difficulty level
@@ -305,6 +307,7 @@ def show_cells_near(visible_grid, diff, guess):
 
     #   CODE BELOW ENTERS RECURSIVE LOOP
     #   FIX THAT SHIT PLS
+    #   TO_FIX
     if x == 0:
         if y == 0:
 
