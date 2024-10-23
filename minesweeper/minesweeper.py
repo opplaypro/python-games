@@ -48,10 +48,15 @@ def change_numbers(grid, x, y):
         grid[x][y] += 1
     return grid
 
+
+
+
+
 #   funcion sets every position to number of bombs near
-#   IT WORKS !!! BEFORE CHANGING TEST IF IT WORKS THE SAME
-#   GRID = [[]]
 def numbers_near_bombs(grid, diff):
+
+    #   IT WORKS !!! BEFORE CHANGING TEST IF IT WORKS THE SAME
+    #   GRID = [[]]
 
     horizontal = 9
     vertical = 9
@@ -373,6 +378,8 @@ def check_if_bomb(x,y, bombs):
 '''
 # test if everything works !!! TERMINAL ONLY!!! NO PYGAME
 def test_script():
+    player_guess(
+        [[0 for _ in range(10)] for _ in range(10)],0)
     bombs_grid = bombs = set_bombs(0)
     print(len(bombs[0]))
     print(len(bombs))
@@ -406,7 +413,7 @@ def player_guess(grid, diff):
         print("Trudny")
     print("Współrzędne miejsca wprowadzaj w formacie 'x, y'\n")
     while play:
-        guess = input("Wprowadź współrzędne: ")
+        guess = input("Wprowadź współrzędne: ").split(",")
         if len(guess) == 2:
             try:
                 x = int(guess[0])
@@ -414,7 +421,7 @@ def player_guess(grid, diff):
             except ValueError:
                 print("BŁĄD, ZŁE WSPÓŁRZĘDNE")
                 continue
-            uncover_cells(grid, visible_grid, diff, (x, y))
+            uncover_cells(grid, visible_grid, diff, (int(x), int(y)))
         else:
             print("error")
             continue
@@ -423,10 +430,14 @@ def player_guess(grid, diff):
 
 
 def uncover_cells(grid, visible_grid, diff, guess):
-    if grid[guess[0]][guess[1]] == 9:
+    x = guess[0]
+    y = guess[1]
+    if grid[x][y] == 9:
         print("Bomba")
     else:
+
         pass
+
 
 
 
