@@ -25,11 +25,13 @@ def choose_difficulty():
     while True:
         difficulty = input("Choose diff")
         if difficulty == "easy":
-            return 10, 10
+            return 0
         elif difficulty == "medium":
-            return 30, 20
+            return 1
         elif difficulty == "hard":
-            return 60, 45
+            return 2
+        elif difficulty == "KONIEC":
+            break
         else:
             print("Wrong input! Try again")
             continue
@@ -41,48 +43,86 @@ button_1_pos = ()
 button_1_size = ()'''
 
 
+def change_numbers(grid, x, y):
+    if grid[x][y] != 9:
+        grid[x][y] += 1
+    return grid
+
+#   funcion sets every position to number of bombs near
+#   IT WORKS !!! BEFORE CHANGING TEST IF IT WORKS THE SAME
+#   GRID = [[]]
 def numbers_near_bombs(grid, diff):
+
     horizontal = 9
     vertical = 9
+
     if diff == 0:
         horizontal = 9
         vertical = 9
+
     elif diff == 1:
         horizontal = 29
         vertical = 19
+
     elif diff == 2:
         horizontal = 59
         vertical = 44
 
     r = c = 0
+
     for row in grid:
+
         for box in row:
+
             if r == 0:
+
                 # only for first row
                 if c == 0:
+
                     # if in first column
                     if box == 9:
+
+                        grid = change_numbers(grid, r, c + 1)
+                        grid = change_numbers(grid, r + 1, c + 1)
+                        grid = change_numbers(grid, r + 1, c)
+                        '''
                         if grid[r][c + 1] != 9:
                             grid[r][c + 1] += 1
+
                         if grid[r + 1][c + 1] != 9:
                             grid[r + 1][c + 1] += 1
+
                         if grid[r + 1][c] != 9:
                             grid[r + 1][c] += 1
+                        '''
+
                         c += 1
                     else:
                         c += 1
                 elif c < horizontal:
                     if box == 9:
+
+                        grid = change_numbers(grid, r, c + 1)
+                        grid = change_numbers(grid, r, c - 1)
+                        grid = change_numbers(grid, r + 1, c - 1)
+                        grid = change_numbers(grid, r + 1, c)
+                        grid = change_numbers(grid, r + 1, c + 1)
+                        '''
                         if grid[r][c + 1] != 9:
                             grid[r][c + 1] += 1
+
                         if grid[r][c - 1] != 9:
                             grid[r][c - 1] += 1
+
                         if grid[r + 1][c] != 9:
                             grid[r + 1][c] += 1
+
                         if grid[r + 1][c - 1] != 9:
                             grid[r + 1][c - 1] += 1
+
                         if grid[r + 1][c + 1] != 9:
                             grid[r + 1][c + 1] += 1
+                        '''
                         c += 1
                     else:
                         c += 1
@@ -90,12 +130,20 @@ def numbers_near_bombs(grid, diff):
 
                 elif c == horizontal:
                     if box == 9:
+
+                        grid = change_numbers(grid, r, c - 1)
+                        grid = change_numbers(grid, r + 1, c - 1)
+                        grid = change_numbers(grid, r + 1, c)
+                        '''
                         if grid[r][c - 1] != 9:
                             grid[r][c - 1] += 1
+
                         if grid[r + 1][c - 1] != 9:
                             grid[r + 1][c - 1] += 1
+
                         if grid[r + 1][c] != 9:
                             grid[r + 1][c] += 1
+                        '''
                         c = 0
                         r += 1
                     else:
@@ -107,54 +155,101 @@ def numbers_near_bombs(grid, diff):
             elif r < vertical:
                 if c == 0:
                     if box == 9:
+
+                        grid = change_numbers(grid, r - 1, c)
+                        grid = change_numbers(grid, r - 1, c + 1)
+                        grid = change_numbers(grid, r, c + 1)
+                        grid = change_numbers(grid, r + 1, c)
+                        grid = change_numbers(grid, r + 1, c + 1)
+
+                        '''
                         if grid[r - 1][c] != 9:
                             grid[r - 1][c] += 1
+
                         if grid[r - 1][c + 1] != 9:
                             grid[r - 1][c + 1] += 1
+
                         if grid[r][c + 1] != 9:
                             grid[r][c + 1] += 1
+
                         if grid[r + 1][c] != 9:
                             grid[r + 1][c] += 1
+
                         if grid[r + 1][c + 1] != 9:
                             grid[r + 1][c + 1] += 1
+                        '''
                         c += 1
                     else:
                         c += 1
 
                 elif c < horizontal:
                     if box == 9:
+
+                        grid = change_numbers(grid, r - 1, c - 1)
+                        grid = change_numbers(grid, r - 1, c)
+                        grid = change_numbers(grid, r - 1, c + 1)
+                        grid = change_numbers(grid, r, c - 1)
+                        grid = change_numbers(grid, r, c + 1)
+                        grid = change_numbers(grid, r + 1, c - 1)
+                        grid = change_numbers(grid, r + 1, c)
+                        grid = change_numbers(grid, r + 1, c + 1)
+
+
+                        '''
                         if grid[r - 1][c - 1] != 9:
                             grid[r - 1][c - 1] += 1
+
                         if grid[r - 1][c] != 9:
                             grid[r - 1][c] += 1
+
                         if grid[r - 1][c + 1] != 9:
                             grid[r - 1][c + 1] += 1
+
                         if grid[r][c - 1] != 9:
                             grid[r][c - 1] += 1
+
                         if grid[r][c + 1] != 9:
                             grid[r][c + 1] += 1
+
                         if grid[r + 1][c - 1] != 9:
                             grid[r + 1][c - 1] += 1
+
                         if grid[r + 1][c] != 9:
                             grid[r + 1][c] += 1
+
                         if grid[r + 1][c + 1] != 9:
                             grid[r + 1][c + 1] += 1
+                            '''
+
                         c += 1
                     else:
                         c += 1
 
                 elif c == horizontal:
                     if box == 9:
+
+                        grid = change_numbers(grid, r - 1, c - 1)
+                        grid = change_numbers(grid, r - 1, c)
+                        grid = change_numbers(grid, r, c - 1)
+                        grid = change_numbers(grid, r + 1, c - 1)
+                        grid = change_numbers(grid, r + 1, c)
+
+                        '''
                         if grid[r - 1][c] != 9:
                             grid[r - 1][c] += 1
+
                         if grid[r - 1][c - 1] != 9:
                             grid[r - 1][c - 1] += 1
+
                         if grid[r][c - 1] != 9:
                             grid[r][c - 1] += 1
+
                         if grid[r + 1][c] != 9:
                             grid[r + 1][c] += 1
+
                         if grid[r + 1][c - 1] != 9:
                             grid[r + 1][c - 1] += 1
+                        '''
                         c = 0
                         r += 1
                     else:
@@ -167,41 +262,72 @@ def numbers_near_bombs(grid, diff):
                 if c == 0:
                     # if in first column
                     if box == 9:
+
+                        grid = change_numbers(grid, r - 1, c)
+                        grid = change_numbers(grid, r - 1, c + 1)
+                        grid = change_numbers(grid, r, c + 1)
+
+                        '''
                         if grid[r][c + 1] != 9:
                             grid[r][c + 1] += 1
+
                         if grid[r - 1][c + 1] != 9:
                             grid[r - 1][c + 1] += 1
+
                         if grid[r - 1][c] != 9:
                             grid[r - 1][c] += 1
+                        '''
                         c += 1
                     else:
                         c += 1
 
                 elif c < horizontal:
                     if box == 9:
+
+                        grid = change_numbers(grid, r - 1, c - 1)
+                        grid = change_numbers(grid, r - 1, c)
+                        grid = change_numbers(grid, r - 1, c + 1)
+                        grid = change_numbers(grid, r, c - 1)
+                        grid = change_numbers(grid, r, c + 1)
+
+                        '''
                         if grid[r][c + 1] != 9:
                             grid[r][c + 1] += 1
+
                         if grid[r][c - 1] != 9:
                             grid[r][c - 1] += 1
+
                         if grid[r - 1][c] != 9:
                             grid[r - 1][c] += 1
+
                         if grid[r - 1][c - 1] != 9:
                             grid[r - 1][c - 1] += 1
+
                         if grid[r - 1][c + 1] != 9:
                             grid[r - 1][c + 1] += 1
+                        '''
                         c += 1
                     else:
                         c += 1
 
                 elif c == horizontal:
                     if box == 9:
+
+                        grid = change_numbers(grid, r - 1, c - 1)
+                        grid = change_numbers(grid, r - 1, c)
+                        grid = change_numbers(grid, r, c - 1)
+
+
+                        '''
                         if grid[r][c - 1] != 9:
                             grid[r][c - 1] += 1
+
                         if grid[r - 1][c - 1] != 9:
                             grid[r - 1][c - 1] += 1
+
                         if grid[r - 1][c] != 9:
                             grid[r - 1][c] += 1
-
+                        '''
                         c = 0
                         r += 1
                     else:
@@ -213,24 +339,26 @@ def numbers_near_bombs(grid, diff):
     return grid
 
 
+# sets grid size and places bombs depending on difficulty
+# easy = 0 , medium = 1 , hard = 2
 def set_bombs(diff):
-
+    bombs_coords = []
     if diff == 0:
-        bombs_coords = [[0 for i in range(10)] for j in range(10)]
+        bombs_coords = [[0 for _ in range(10)] for _ in range(10)]
         for i in range(15):
             x = random.randint(0, 9)
             y = random.randint(0, 9)
             bombs_coords[x][y] = 9
 
     elif diff == 1:
-        bombs_coords = [[0 for i in range(20)] for j in range(30)]
+        bombs_coords = [[0 for _ in range(20)] for _ in range(30)]
         for i in range(31):
             x = random.randint(0, 29)
             y = random.randint(0, 19)
             bombs_coords[x][y] = 9
 
     elif diff == 2:
-        bombs_coords = [[0 for i in range(45)] for j in range(60)]
+        bombs_coords = [[0 for _ in range(45)] for _ in range(60)]
         for i in range(91):
             x = random.randint(0, 59)
             y = random.randint(0, 44)
@@ -242,38 +370,80 @@ def set_bombs(diff):
 def check_if_bomb(x,y, bombs):
     1
 
-def set_number_of_bombs(bombs):
-    1
 '''
+# test if everything works !!! TERMINAL ONLY!!! NO PYGAME
+def test_script():
+    bombs_grid = bombs = set_bombs(0)
+    print(len(bombs[0]))
+    print(len(bombs))
+    print(bombs)
+    k = m = 0
+    for i in bombs:
+        for j in i:
+            if j == 9:
+                print(k, m, end="   ")
+            m += 1
+        print()
+        m = 0
+        k += 1
+    for i in bombs:
+        print(i)
+    corrected = numbers_near_bombs(bombs_grid, 0)
+    print("\n\n\n")
+    for i in corrected:
+        print(i)
 
 
-bombs_grid = bombs = set_bombs(0)
-print(len(bombs[0]))
-print(len(bombs))
-print(bombs)
-k = m = 0
-for i in bombs:
-    for j in i:
-        if j == 9:
-            print(k, m, end="   ")
-        m += 1
-    print()
-    m = 0
-    k += 1
-for i in bombs:
-    print(i)
-corrected = numbers_near_bombs(bombs_grid, 0)
-print("\n\n\n")
-for i in corrected:
-    print(i)
+def player_guess(grid, diff):
+    visible_grid = []
+    play = True
+    print("Witaj w grze Saper!\nPoziom Trudności został ustawiony na: ", end="")
+    if diff == 0:
+        print("Łatwy")
+    elif diff == 1:
+        print("Średni")
+    elif diff == 2:
+        print("Trudny")
+    print("Współrzędne miejsca wprowadzaj w formacie 'x, y'\n")
+    while play:
+        guess = input("Wprowadź współrzędne: ")
+        if len(guess) == 2:
+            try:
+                x = int(guess[0])
+                y = int(guess[1])
+            except ValueError:
+                print("BŁĄD, ZŁE WSPÓŁRZĘDNE")
+                continue
+            uncover_cells(grid, visible_grid, diff, (x, y))
+        else:
+            print("error")
+            continue
 
 
 
 
+def uncover_cells(grid, visible_grid, diff, guess):
+    if grid[guess[0]][guess[1]] == 9:
+        print("Bomba")
+    else:
+        pass
 
 
 
+def game():
+    diff = choose_difficulty()
+    bomb_grid = set_bombs(diff)
+    numbers_near_bombs(bomb_grid, diff)
 
+
+TESTS = True
+
+
+if __name__ == "__main__":
+    if TESTS:
+        test_script()
+    else:
+        game()
 
 
 
