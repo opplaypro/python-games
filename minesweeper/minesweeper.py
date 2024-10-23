@@ -1,11 +1,10 @@
 ﻿# coding=utf-8
 
-import pygame
+# import pygame
 import random
 import os
 
-from pygame import mouse
-
+# from pygame import mouse
 
 
 os.system('cls')
@@ -35,47 +34,245 @@ def choose_difficulty():
             print("Wrong input! Try again")
             continue
 
+
+'''
 # button place and size
 button_1_pos = ()
-button_1_size = ()
+button_1_size = ()'''
+
+
+def numbers_near_bombs(grid, diff):
+    horizontal = 9
+    vertical = 9
+    if diff == 0:
+        horizontal = 9
+        vertical = 9
+    elif diff == 1:
+        horizontal = 29
+        vertical = 19
+    elif diff == 2:
+        horizontal = 59
+        vertical = 44
+
+    r = c = 0
+    for row in grid:
+        for box in row:
+            if r == 0:
+                # only for first row
+                if c == 0:
+                    # if in first column
+                    if box == 9:
+                        if grid[r][c + 1] != 9:
+                            grid[r][c + 1] += 1
+                        if grid[r + 1][c + 1] != 9:
+                            grid[r + 1][c + 1] += 1
+                        if grid[r + 1][c] != 9:
+                            grid[r + 1][c] += 1
+                        c += 1
+                    else:
+                        c += 1
+                elif c < horizontal:
+                    if box == 9:
+                        if grid[r][c + 1] != 9:
+                            grid[r][c + 1] += 1
+                        if grid[r][c - 1] != 9:
+                            grid[r][c - 1] += 1
+                        if grid[r + 1][c] != 9:
+                            grid[r + 1][c] += 1
+                        if grid[r + 1][c - 1] != 9:
+                            grid[r + 1][c - 1] += 1
+                        if grid[r + 1][c + 1] != 9:
+                            grid[r + 1][c + 1] += 1
+                        c += 1
+                    else:
+                        c += 1
+
+
+                elif c == horizontal:
+                    if box == 9:
+                        if grid[r][c - 1] != 9:
+                            grid[r][c - 1] += 1
+                        if grid[r + 1][c - 1] != 9:
+                            grid[r + 1][c - 1] += 1
+                        if grid[r + 1][c] != 9:
+                            grid[r + 1][c] += 1
+                        c = 0
+                        r += 1
+                    else:
+                        c = 0
+                        r += 1
+                else:
+                    c = 0
+                    r += 1
+            elif r < vertical:
+                if c == 0:
+                    if box == 9:
+                        if grid[r - 1][c] != 9:
+                            grid[r - 1][c] += 1
+                        if grid[r - 1][c + 1] != 9:
+                            grid[r - 1][c + 1] += 1
+                        if grid[r][c + 1] != 9:
+                            grid[r][c + 1] += 1
+                        if grid[r + 1][c] != 9:
+                            grid[r + 1][c] += 1
+                        if grid[r + 1][c + 1] != 9:
+                            grid[r + 1][c + 1] += 1
+                        c += 1
+                    else:
+                        c += 1
+
+                elif c < horizontal:
+                    if box == 9:
+                        if grid[r - 1][c - 1] != 9:
+                            grid[r - 1][c - 1] += 1
+                        if grid[r - 1][c] != 9:
+                            grid[r - 1][c] += 1
+                        if grid[r - 1][c + 1] != 9:
+                            grid[r - 1][c + 1] += 1
+                        if grid[r][c - 1] != 9:
+                            grid[r][c - 1] += 1
+                        if grid[r][c + 1] != 9:
+                            grid[r][c + 1] += 1
+                        if grid[r + 1][c - 1] != 9:
+                            grid[r + 1][c - 1] += 1
+                        if grid[r + 1][c] != 9:
+                            grid[r + 1][c] += 1
+                        if grid[r + 1][c + 1] != 9:
+                            grid[r + 1][c + 1] += 1
+                        c += 1
+                    else:
+                        c += 1
+
+                elif c == horizontal:
+                    if box == 9:
+                        if grid[r - 1][c] != 9:
+                            grid[r - 1][c] += 1
+                        if grid[r - 1][c - 1] != 9:
+                            grid[r - 1][c - 1] += 1
+                        if grid[r][c - 1] != 9:
+                            grid[r][c - 1] += 1
+                        if grid[r + 1][c] != 9:
+                            grid[r + 1][c] += 1
+                        if grid[r + 1][c - 1] != 9:
+                            grid[r + 1][c - 1] += 1
+                        c = 0
+                        r += 1
+                    else:
+                        c = 0
+                        r += 1
+                else:
+                    c = 0
+                    r += 1
+            elif r == vertical:
+                if c == 0:
+                    # if in first column
+                    if box == 9:
+                        if grid[r][c + 1] != 9:
+                            grid[r][c + 1] += 1
+                        if grid[r - 1][c + 1] != 9:
+                            grid[r - 1][c + 1] += 1
+                        if grid[r - 1][c] != 9:
+                            grid[r - 1][c] += 1
+                        c += 1
+                    else:
+                        c += 1
+
+                elif c < horizontal:
+                    if box == 9:
+                        if grid[r][c + 1] != 9:
+                            grid[r][c + 1] += 1
+                        if grid[r][c - 1] != 9:
+                            grid[r][c - 1] += 1
+                        if grid[r - 1][c] != 9:
+                            grid[r - 1][c] += 1
+                        if grid[r - 1][c - 1] != 9:
+                            grid[r - 1][c - 1] += 1
+                        if grid[r - 1][c + 1] != 9:
+                            grid[r - 1][c + 1] += 1
+                        c += 1
+                    else:
+                        c += 1
+
+                elif c == horizontal:
+                    if box == 9:
+                        if grid[r][c - 1] != 9:
+                            grid[r][c - 1] += 1
+                        if grid[r - 1][c - 1] != 9:
+                            grid[r - 1][c - 1] += 1
+                        if grid[r - 1][c] != 9:
+                            grid[r - 1][c] += 1
+
+                        c = 0
+                        r += 1
+                    else:
+                        c = 0
+                        r += 1
+                else:
+                    c = 0
+                    r += 1
+    return grid
+
 
 def set_bombs(diff):
 
     if diff == 0:
-        bombs_coords = [["0" for i in range(10)] for j in range(10)]
+        bombs_coords = [[0 for i in range(10)] for j in range(10)]
         for i in range(15):
-            x = random.randint(0,9)
-            y = random.randint(0,9)
-            bombs_coords[x][y] = "9"
+            x = random.randint(0, 9)
+            y = random.randint(0, 9)
+            bombs_coords[x][y] = 9
 
+    elif diff == 1:
+        bombs_coords = [[0 for i in range(20)] for j in range(30)]
+        for i in range(31):
+            x = random.randint(0, 29)
+            y = random.randint(0, 19)
+            bombs_coords[x][y] = 9
 
-    if diff == 1:
-        bombs_coords = [["0" for i in range(20)] for j in range(30)]
-        for i in range(30):
-            x = random.randint(0,29)
-            y = random.randint(0,19)
-            bombs_coords[x][y] = "9"
-
-
-    if diff == 2:
-        bombs_coords = [["0" for i in range(45)] for j in range(60)]
-        for i in range(90):
-            x = random.randint(0,59)
-            y = random.randint(0,44)
-            bombs_coords[x][y] = "9"
+    elif diff == 2:
+        bombs_coords = [[0 for i in range(45)] for j in range(60)]
+        for i in range(91):
+            x = random.randint(0, 59)
+            y = random.randint(0, 44)
+            bombs_coords[x][y] = 9
     return bombs_coords
 
 
+'''
 def check_if_bomb(x,y, bombs):
     1
 
 def set_number_of_bombs(bombs):
     1
+'''
 
-bombs = set_bombs(2)
+
+bombs_grid = bombs = set_bombs(0)
 print(len(bombs[0]))
 print(len(bombs))
 print(bombs)
+k = m = 0
+for i in bombs:
+    for j in i:
+        if j == 9:
+            print(k, m, end="   ")
+        m += 1
+    print()
+    m = 0
+    k += 1
+for i in bombs:
+    print(i)
+corrected = numbers_near_bombs(bombs_grid, 0)
+print("\n\n\n")
+for i in corrected:
+    print(i)
+
+
+
+
+
+
+
 
 
 
