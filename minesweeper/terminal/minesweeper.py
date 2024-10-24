@@ -1,10 +1,13 @@
 ﻿# coding=utf-8
 
-# import pygame
+
 import random
 import os
+import time
 
-# from pygame import mouse
+
+#   import pygame
+#   from pygame import mouse
 
 os.system('cls')
 
@@ -17,6 +20,9 @@ change0002: change input method
 
 for other things to fix look for comments with "TO_FIX"
 '''
+
+
+
 
 # function to choose difficulty level
 # change input method to button on UI instead of text input #change0002
@@ -39,10 +45,14 @@ def choose_difficulty():
             continue
 
 
+
+
 '''
 # button place and size
 button_1_pos = ()
 button_1_size = ()'''
+
+
 
 
 def change_numbers(grid, x, y):
@@ -51,7 +61,10 @@ def change_numbers(grid, x, y):
     return grid
 
 
+
+
 #   funcion sets every position to number of bombs near
+#   rewrite using less code if possible
 def numbers_near_bombs(grid, diff):
 
     #   IT WORKS !!! BEFORE CHANGING TEST IF IT WORKS THE SAME
@@ -90,8 +103,10 @@ def numbers_near_bombs(grid, diff):
                         grid = change_numbers(grid, r + 1, c + 1)
                         grid = change_numbers(grid, r + 1, c)
                         c += 1
+
                     else:
                         c += 1
+
                 elif c < horizontal:
                     if box == 9:
 
@@ -101,9 +116,9 @@ def numbers_near_bombs(grid, diff):
                         grid = change_numbers(grid, r + 1, c)
                         grid = change_numbers(grid, r + 1, c + 1)
                         c += 1
+
                     else:
                         c += 1
-
 
                 elif c == horizontal:
                     if box == 9:
@@ -113,12 +128,15 @@ def numbers_near_bombs(grid, diff):
                         grid = change_numbers(grid, r + 1, c)
                         c = 0
                         r += 1
+
                     else:
                         c = 0
                         r += 1
+
                 else:
                     c = 0
                     r += 1
+
             elif r < vertical:
                 if c == 0:
                     if box == 9:
@@ -129,6 +147,7 @@ def numbers_near_bombs(grid, diff):
                         grid = change_numbers(grid, r + 1, c)
                         grid = change_numbers(grid, r + 1, c + 1)
                         c += 1
+
                     else:
                         c += 1
 
@@ -144,6 +163,7 @@ def numbers_near_bombs(grid, diff):
                         grid = change_numbers(grid, r + 1, c)
                         grid = change_numbers(grid, r + 1, c + 1)
                         c += 1
+
                     else:
                         c += 1
 
@@ -157,12 +177,15 @@ def numbers_near_bombs(grid, diff):
                         grid = change_numbers(grid, r + 1, c)
                         c = 0
                         r += 1
+
                     else:
                         c = 0
                         r += 1
+
                 else:
                     c = 0
                     r += 1
+
             elif r == vertical:
                 if c == 0:
                     # if in first column
@@ -172,6 +195,7 @@ def numbers_near_bombs(grid, diff):
                         grid = change_numbers(grid, r - 1, c + 1)
                         grid = change_numbers(grid, r, c + 1)
                         c += 1
+
                     else:
                         c += 1
 
@@ -184,6 +208,7 @@ def numbers_near_bombs(grid, diff):
                         grid = change_numbers(grid, r, c - 1)
                         grid = change_numbers(grid, r, c + 1)
                         c += 1
+
                     else:
                         c += 1
 
@@ -195,13 +220,18 @@ def numbers_near_bombs(grid, diff):
                         grid = change_numbers(grid, r, c - 1)
                         c = 0
                         r += 1
+
                     else:
                         c = 0
                         r += 1
+
                 else:
                     c = 0
                     r += 1
+
     return grid
+
+
 
 
 # sets grid size and places bombs depending on difficulty
@@ -232,6 +262,7 @@ def set_bombs(diff):
 
 
 
+
 # test if everything works !!! TERMINAL ONLY!!! NO PYGAME
 def test_script():
     player_guess(
@@ -257,6 +288,42 @@ def test_script():
         print(i)
 
 
+
+
+def print_grid(grid, diff):
+    k = 1
+    if diff == 0:
+        print("\t", end="   ")
+        for i in range(0, 10):
+            print(i + 1, end="    ")
+        print()
+        for row in grid:
+            print(f"{k}\t {row}")
+            k += 1
+    if diff == 1:
+        print("\t", end="   ")
+        for i in range(0, 9):
+            print(i + 1, end="    ")
+        for i in range(0, 21):
+            print(i + 10, end="   ")
+        print()
+        for row in grid:
+            print(f"{k}\t {row}")
+            k += 1
+    if diff == 2:
+        print("\t", end="   ")
+        for i in range(10):
+            print(i + 1, end="    ")
+        for i in range(50):
+            print(i + 11, end="   ")
+        print()
+        for row in grid:
+            print(f"{k}\t {row}")
+            k += 1
+
+
+
+
 def player_guess(grid, diff):
 
     play = True
@@ -268,10 +335,20 @@ def player_guess(grid, diff):
 
     visible_grid = [["_" for _ in range(max_x + 1)] for _ in range(max_y + 1)]
     print("Współrzędne miejsca wprowadzaj w formacie 'x, y'\n")
+    for k in range(4):
+        time.sleep(0.1 * random.randint(3, 7))
+        print("Trwa Ładowanie", k+1, "/10")
+    print("Jeżeli wybrałeś poziom trudności średni albo trudny, musisz zmienić rozmier okna i rozmier czcionki (ctrl + scroll)")
+    for k in range(6):
+        time.sleep(0.1 * random.randint(3, 7))
+        print("Trwa Ładowanie", k+5, "/10")
+    os.system('cls')
     visited_cells = []
+    print_grid(visible_grid, diff)
     while play:
         guess = input("Wprowadź współrzędne: ").split(",")
         os.system('cls')
+
         if len(guess) == 2:
             try:
                 y = int(guess[0]) - 1
@@ -279,15 +356,21 @@ def player_guess(grid, diff):
             except ValueError:
                 print("BŁĄD, ZŁE WSPÓŁRZĘDNE")
                 continue
-            if 0 <= x <= max_x and 0 <= y <= max_y:
-                visible_grid, play, visited_cells = uncover_cells(grid, visible_grid, diff, (int(x), int(y)), visited_cells)
-
+            if (x, y) in visited_cells:
+                print("Ta komórka jest już odkryta")
+                print_grid(visible_grid, diff)
             else:
-                print("error, za dużo")
+                if 0 <= x <= max_x and 0 <= y <= max_y:
+                    visible_grid, play, visited_cells = uncover_cells(grid, visible_grid, diff, (int(x), int(y)), visited_cells)
+
+                else:
+                    print("error, za dużo")
 
         else:
             print("error")
             continue
+
+
 
 
 def show_cells_near(grid, visible_grid, diff, guess, visited_cells):
@@ -308,109 +391,13 @@ def show_cells_near(grid, visible_grid, diff, guess, visited_cells):
         for dx, dy in cells_nearby:
             nx = x + dx
             ny = y + dy
-            if 0 <= nx < horizontal and 0 <= ny < vertical:
+            if 0 <= nx <= horizontal and 0 <= ny <= vertical:
                 if (nx, ny) not in visited_cells:
                     visible_grid, visited_cells = show_cells_near(grid, visible_grid, diff, (nx, ny), visited_cells)
 
     return visible_grid, visited_cells
 
-'''
-    if 0 <= nx < horizontal and 0 <= ny < vertical:
-        if (nx, ny) not in visited_cells:
-            visible_grid = show_cells_near(grid, visible_grid, diff, (nx, ny), visited_cells)'''
 
-
-
-'''for dx, dy in cells_nearby:
-            nx = x + dx
-            ny = y + dy
-            if 0 <= nx < horizontal and 0 <= ny < vertical:
-                if (nx, ny) not in visited_cells:
-                    if grid[ny][nx] in [1, 2, 3, 4, 5, 6, 7, 8]:
-                        visible_grid[ny][nx] = grid[ny][nx]
-                    else:
-                        visible_grid = show_cells_near(grid, visible_grid, diff, (nx, ny), visited_cells)
-                        
-                        
-                        '''
-
-
-
-''''
-    #   CODE BELOW ENTERS RECURSIVE LOOP
-    #   FIX THAT SHIT PLS
-    #   TO_FIX
-    visited_cells.append(guess)
-
-    if x == 0:
-        if y == 0:
-            if grid[x][y] == 0:
-                visible_grid = show_cells_near(grid, visible_grid, diff, (x, y + 1))
-                visible_grid = show_cells_near(visible_grid, diff, (x + 1, y))
-                visible_grid = show_cells_near(visible_grid, diff, (x + 1, y + 1))
-
-        elif y < vertical:
-
-            visible_grid = show_cells_near(visible_grid, diff, (x, y - 1))
-            visible_grid = show_cells_near(visible_grid, diff, (x, y + 1))                visible_grid = show_cells_near(visible_grid, diff, (x + 1, y - 1))
-            visible_grid = show_cells_near(visible_grid, diff, (x + 1, y))
-            visible_grid = show_cells_near(visible_grid, diff, (x + 1, y + 1))
-        elif y == vertical:
-
-            visible_grid = show_cells_near(visible_grid, diff, (x, y - 1))
-            visible_grid = show_cells_near(visible_grid, diff, (x + 1, y - 1))
-            visible_grid = show_cells_near(visible_grid, diff, (x + 1, y))
-
-    elif x < horizontal:
-        if y == 0:
-
-            visible_grid = show_cells_near(visible_grid, diff, (x - 1, y))
-            visible_grid = show_cells_near(visible_grid, diff, (x - 1, y + 1))
-            visible_grid = show_cells_near(visible_grid, diff, (x, y + 1))
-            visible_grid = show_cells_near(visible_grid, diff, (x + 1, y))
-            visible_grid = show_cells_near(visible_grid, diff, (x + 1, y + 1))
-
-        elif y < vertical:
-
-            visible_grid = show_cells_near(visible_grid, diff, (x - 1, y - 1))
-            visible_grid = show_cells_near(visible_grid, diff, (x - 1, y + 1))
-            visible_grid = show_cells_near(visible_grid, diff, (x - 1, y - 1))
-            visible_grid = show_cells_near(visible_grid, diff, (x, y - 1))
-            visible_grid = show_cells_near(visible_grid, diff, (x, y + 1))
-            visible_grid = show_cells_near(visible_grid, diff, (x + 1, y - 1))
-            visible_grid = show_cells_near(visible_grid, diff, (x + 1, y))
-            visible_grid = show_cells_near(visible_grid, diff, (x + 1, y + 1))
-
-
-        elif y == vertical:
-
-            visible_grid = show_cells_near(visible_grid, diff, (x - 1, y - 1))
-            visible_grid = show_cells_near(visible_grid, diff, (x - 1, y))
-            visible_grid = show_cells_near(visible_grid, diff, (x, y - 1))
-            visible_grid = show_cells_near(visible_grid, diff, (x + 1, y - 1))
-            visible_grid = show_cells_near(visible_grid, diff, (x + 1, y))
-    elif x == horizontal:
-        if y == 0:
-
-            visible_grid = show_cells_near(visible_grid, diff, (x - 1, y))
-            visible_grid = show_cells_near(visible_grid, diff, (x - 1, y + 1))
-            visible_grid = show_cells_near(visible_grid, diff, (x, y + 1))
-
-        elif y < vertical:
-
-            visible_grid = show_cells_near(visible_grid, diff, (x - 1, y - 1))
-            visible_grid = show_cells_near(visible_grid, diff, (x - 1, y))
-            visible_grid = show_cells_near(visible_grid, diff, (x - 1, y + 1))
-            visible_grid = show_cells_near(visible_grid, diff, (x, y - 1))
-            visible_grid = show_cells_near(visible_grid, diff, (x, y + 1))
-
-        elif y == vertical:
-
-            visible_grid = show_cells_near(visible_grid, diff, (x - 1, y - 1))
-            visible_grid = show_cells_near(visible_grid, diff, (x - 1, y))
-            visible_grid = show_cells_near(visible_grid, diff, (x, y - 1))
-    visited_cells.append(guess)
-'''
 
 
 def uncover_cells(grid, visible_grid, diff, guess, visited_cells):
@@ -419,19 +406,25 @@ def uncover_cells(grid, visible_grid, diff, guess, visited_cells):
     if grid[x][y] == 9:
         print("Bomba\nPrezgrałeś")
         play = False
+        time.sleep(5)
+        visible_grid[x][y] = "B"
 
     else:
         visible_grid, visited_cells = show_cells_near(grid, visible_grid, diff, guess, visited_cells)
         play = True
 
-    for row in visible_grid:
-        print(row)
+    print_grid(visible_grid, diff)
 
     return visible_grid, play, visited_cells
 
 
+
+
 def first_interaction():
     print("Witaj w grze Saper!\nJeśli pojawią się błędy, zgłoś proszę!")
+
+
+
 
 def game():
     first_interaction()
@@ -441,8 +434,10 @@ def game():
     player_guess(bomb_grid, diff)
 
 
-TESTS = 0
 
+
+#   change to 1 if you want to use test function instead if game()
+TESTS = 0
 
 if __name__ == "__main__":
     if TESTS:
