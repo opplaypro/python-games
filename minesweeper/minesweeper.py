@@ -265,6 +265,7 @@ def player_guess(grid, diff):
         print("error")
         max_x = 9
         max_y = 9
+
     visible_grid = [["_" for _ in range(max_x + 1)] for _ in range(max_y + 1)]
     print("Współrzędne miejsca wprowadzaj w formacie 'x, y'\n")
     visited_cells = []
@@ -280,10 +281,10 @@ def player_guess(grid, diff):
                 continue
             if 0 <= x <= max_x and 0 <= y <= max_y:
                 visible_grid, play, visited_cells = uncover_cells(grid, visible_grid, diff, (int(x), int(y)), visited_cells)
-                for i in visible_grid:
-                    print(i)
+
             else:
                 print("error, za dużo")
+
         else:
             print("error")
             continue
@@ -418,11 +419,14 @@ def uncover_cells(grid, visible_grid, diff, guess, visited_cells):
     if grid[x][y] == 9:
         print("Bomba\nPrezgrałeś")
         play = False
+
     else:
         visible_grid, visited_cells = show_cells_near(grid, visible_grid, diff, guess, visited_cells)
         play = True
+
     for row in visible_grid:
         print(row)
+
     return visible_grid, play, visited_cells
 
 
