@@ -258,34 +258,28 @@ def test_script():
 
 
 def player_guess(grid, diff):
-    visible_grid = []
+
     play = True
-    if diff == 0:
-        max_x = 9
-        max_y = 9
-    elif diff == 1:
-        max_x = 29
-        max_y = 19
-    elif diff == 2:
-        max_x = 59
-        max_y = 44
-    else:
+    max_x, max_y = [9, 29, 59][diff], [9, 19, 44][diff]
+    if diff not in [0, 1, 2]:
         print("error")
         max_x = 9
         max_y = 9
+    visible_grid = [["_" for _ in range(max_x + 1)] for _ in range(max_y + 1)]
     print("Współrzędne miejsca wprowadzaj w formacie 'x, y'\n")
+    visited_cells = []
     while play:
-        os.system('cls')
         guess = input("Wprowadź współrzędne: ").split(",")
+        os.system('cls')
         if len(guess) == 2:
             try:
-                x = int(guess[0])
-                y = int(guess[1])
+                y = int(guess[0]) - 1
+                x = int(guess[1]) - 1
             except ValueError:
                 print("BŁĄD, ZŁE WSPÓŁRZĘDNE")
                 continue
             if 0 <= x <= max_x and 0 <= y <= max_y:
-                visible_grid, play = uncover_cells(grid, visible_grid, diff, (int(x), int(y)))
+                visible_grid, play, visited_cells = uncover_cells(grid, visible_grid, diff, (int(x), int(y)), visited_cells)
                 for i in visible_grid:
                     print(i)
             else:
@@ -295,34 +289,71 @@ def player_guess(grid, diff):
             continue
 
 
-def show_cells_near(visible_grid, diff, guess):
-    visited_cells = [guess]
-    x = guess[0]
-    y = guess[1]
+def show_cells_near(grid, visible_grid, diff, guess, visited_cells):
+
+    x, y = guess
+    if guess in visited_cells:
+        return visible_grid
+
+    visited_cells.append(guess)
     horizontal = [9, 29, 59][diff]
     vertical = [9, 19, 44][diff]
 
 
+    cells_nearby = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
+    visible_grid[x][y] = str(grid[x][y])
+
+    if grid[x][y] == 0:
+        for dx, dy in cells_nearby:
+            nx = x + dx
+            ny = y + dy
+            if 0 <= nx < horizontal and 0 <= ny < vertical:
+                if (nx, ny) not in visited_cells:
+                    visible_grid, visited_cells = show_cells_near(grid, visible_grid, diff, (nx, ny), visited_cells)
+
+    return visible_grid, visited_cells
+
+'''
+    if 0 <= nx < horizontal and 0 <= ny < vertical:
+        if (nx, ny) not in visited_cells:
+            visible_grid = show_cells_near(grid, visible_grid, diff, (nx, ny), visited_cells)'''
 
 
+
+'''for dx, dy in cells_nearby:
+            nx = x + dx
+            ny = y + dy
+            if 0 <= nx < horizontal and 0 <= ny < vertical:
+                if (nx, ny) not in visited_cells:
+                    if grid[ny][nx] in [1, 2, 3, 4, 5, 6, 7, 8]:
+                        visible_grid[ny][nx] = grid[ny][nx]
+                    else:
+                        visible_grid = show_cells_near(grid, visible_grid, diff, (nx, ny), visited_cells)
+                        
+                        
+                        '''
+
+
+
+''''
     #   CODE BELOW ENTERS RECURSIVE LOOP
     #   FIX THAT SHIT PLS
     #   TO_FIX
+    visited_cells.append(guess)
+
     if x == 0:
         if y == 0:
-
-            visible_grid = show_cells_near(visible_grid, diff, (x, y + 1))
-            visible_grid = show_cells_near(visible_grid, diff, (x + 1, y))
-            visible_grid = show_cells_near(visible_grid, diff, (x + 1, y + 1))
+            if grid[x][y] == 0:
+                visible_grid = show_cells_near(grid, visible_grid, diff, (x, y + 1))
+                visible_grid = show_cells_near(visible_grid, diff, (x + 1, y))
+                visible_grid = show_cells_near(visible_grid, diff, (x + 1, y + 1))
 
         elif y < vertical:
 
             visible_grid = show_cells_near(visible_grid, diff, (x, y - 1))
-            visible_grid = show_cells_near(visible_grid, diff, (x, y + 1))
-            visible_grid = show_cells_near(visible_grid, diff, (x + 1, y - 1))
+            visible_grid = show_cells_near(visible_grid, diff, (x, y + 1))                visible_grid = show_cells_near(visible_grid, diff, (x + 1, y - 1))
             visible_grid = show_cells_near(visible_grid, diff, (x + 1, y))
             visible_grid = show_cells_near(visible_grid, diff, (x + 1, y + 1))
-
         elif y == vertical:
 
             visible_grid = show_cells_near(visible_grid, diff, (x, y - 1))
@@ -330,7 +361,6 @@ def show_cells_near(visible_grid, diff, guess):
             visible_grid = show_cells_near(visible_grid, diff, (x + 1, y))
 
     elif x < horizontal:
-
         if y == 0:
 
             visible_grid = show_cells_near(visible_grid, diff, (x - 1, y))
@@ -377,23 +407,23 @@ def show_cells_near(visible_grid, diff, guess):
 
             visible_grid = show_cells_near(visible_grid, diff, (x - 1, y - 1))
             visible_grid = show_cells_near(visible_grid, diff, (x - 1, y))
-            visible_grid = show_cells_near(visible_grid, diff, (x, y- 1))
+            visible_grid = show_cells_near(visible_grid, diff, (x, y - 1))
+    visited_cells.append(guess)
+'''
 
-    return visible_grid
 
-
-def uncover_cells(grid, visible_grid, diff, guess):
+def uncover_cells(grid, visible_grid, diff, guess, visited_cells):
     x = guess[0]
     y = guess[1]
     if grid[x][y] == 9:
         print("Bomba\nPrezgrałeś")
         play = False
     else:
-        visible_grid = show_cells_near(visible_grid, diff, guess)
+        visible_grid, visited_cells = show_cells_near(grid, visible_grid, diff, guess, visited_cells)
         play = True
-    for i in visible_grid:
-        print(i)
-    return visible_grid, play
+    for row in visible_grid:
+        print(row)
+    return visible_grid, play, visited_cells
 
 
 def first_interaction():
