@@ -246,7 +246,8 @@ def player_guess(grid, diff):
         max_y = 9
 
     visible_grid = [["_" for _ in range(max_x + 1)] for _ in range(max_y + 1)]
-    print("Współrzędne miejsca wprowadzaj w formacie 'x, y'\n")
+    print("Współrzędne miejsca wprowadzaj w formacie 'x, y'\nOznaczona bomba ma symbol 'F'")
+
     for k in range(4):
         time.sleep(0.1 * random.randint(3, 7))
         print("Trwa Ładowanie", k+1, "/10")
@@ -261,7 +262,8 @@ def player_guess(grid, diff):
     print_grid(visible_grid, diff)
 
     while play:
-        guess = input("Wprowadź współrzędne: ").split(",")
+        guess = input("Aby odgadnąć komórkę, wprowadź współrzędne 'x,y'\nJeżeli chcesz oznaczyć bombę, wpisz 'x,y,B'"
+                      "\nJeśli uważasz, że oznaczyłeś wszystkie bomby, wpisz 'koniec': ").split(",")
         os.system('cls')
 
         if len(guess) == 2:
@@ -274,12 +276,40 @@ def player_guess(grid, diff):
             if (x, y) in visited_cells:
                 print("Ta komórka jest już odkryta")
                 print_grid(visible_grid, diff)
+            elif visible_grid[x][y] == "F":
+                print("Ta komórka została oflagowana, nie możesz jest teraz odkryć")
+                print_grid(visible_grid, diff)
             else:
                 if 0 <= x <= max_x and 0 <= y <= max_y:
                     visible_grid, play, visited_cells = uncover_cells(grid, visible_grid, diff, (int(x), int(y)), visited_cells)
                 else:
                     print("error, za dużo")
-        else:
+        elif len(guess) == 3:
+            y = int(guess[0]) - 1
+            x = int(guess[1]) - 1
+            if guess[2].lower() == "b" or "b\n":
+                if visible_grid[x][y] == "F":
+                    visible_grid[x][y] = "_"
+                elif visible_grid[x][y] == "_":
+                    visible_grid[x][y] = "F"
+                else:
+                    print("error, nie ustawiono flagi")
+            print_grid(visible_grid, diff)
+        elif guess[0].lower() == "koniec":
+            r = 0
+            c = 0
+            for q in grid:
+                for w in q:
+                    if w == 9:
+                        if visible_grid[r][c] == "F":
+                            continue
+                        else:
+                            print("źle")
+                            play = False
+                    r += 1
+                r = 0
+                c += 1
+
             print("error")
             continue
 
@@ -317,7 +347,9 @@ def uncover_cells(grid, visible_grid, diff, guess, visited_cells):
         play = False
         time.sleep(5)
         visible_grid[x][y] = "B"
-
+    elif grid[x][y] == "F":
+        print("Ta komórka została oznaczona jako bomba, nie możesz jej teraz odkryć")
+        play = True
     else:
         visible_grid, visited_cells = show_cells_near(grid, visible_grid, diff, guess, visited_cells)
         play = True
