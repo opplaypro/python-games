@@ -180,31 +180,6 @@ def set_bombs(diff):
     return bombs_coords
 
 
-# test if everything works !!! TERMINAL ONLY!!! NO PYGAME
-def test_script():
-    player_guess(
-        [[0 for _ in range(10)] for _ in range(10)],0)
-    bombs_grid = bombs = set_bombs(0)
-    print(len(bombs[0]))
-    print(len(bombs))
-    print(bombs)
-    k = m = 0
-    for i in bombs:
-        for j in i:
-            if j == 9:
-                print(k, m, end="   ")
-            m += 1
-        print()
-        m = 0
-        k += 1
-    for i in bombs:
-        print(i)
-    corrected = numbers_near_bombs(bombs_grid, 0)
-    print("\n\n\n")
-    for i in corrected:
-        print(i)
-
-
 def print_grid(grid, diff):
     k = 1
     if diff == 0:
@@ -385,8 +360,6 @@ def game():
     player_guess(bomb_grid, diff)
 
 
-#   change to 1 if you want to use test function instead if game()
-TESTS = 0
 
 if __name__ == "__main__":
     if TESTS:
