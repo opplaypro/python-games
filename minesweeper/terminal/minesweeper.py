@@ -240,10 +240,6 @@ def print_grid(grid, diff):
 def player_guess(grid, diff):
     play = True
     max_x, max_y = [9, 29, 59][diff], [9, 19, 44][diff]
-    if diff not in [0, 1, 2]:
-        print("error")
-        max_x = 9
-        max_y = 9
 
     visible_grid = [["_" for _ in range(max_x + 1)] for _ in range(max_y + 1)]
     print("Współrzędne miejsca wprowadzaj w formacie 'x, y'\nOznaczona bomba ma symbol 'F'")
