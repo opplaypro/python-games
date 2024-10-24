@@ -362,7 +362,4 @@ def game():
 
 
 if __name__ == "__main__":
-    if TESTS:
-        test_script()
-    else:
-        game()
+    game()
