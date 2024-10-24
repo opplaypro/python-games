@@ -274,11 +274,17 @@ def player_guess(grid, diff):
                 print("BŁĄD, ZŁE WSPÓŁRZĘDNE")
                 continue
             if (x, y) in visited_cells:
-                print("Ta komórka jest już odkryta")
-                print_grid(visible_grid, diff)
+                if 0 <= x <= max_x and 0 <= y <= max_y:
+                    print("Ta komórka jest już odkryta")
+                    print_grid(visible_grid, diff)
+                else:
+                    print("error, za dużo")
             elif visible_grid[x][y] == "F":
-                print("Ta komórka została oflagowana, nie możesz jest teraz odkryć")
-                print_grid(visible_grid, diff)
+                if 0 <= x <= max_x and 0 <= y <= max_y:
+                    print("Ta komórka została oflagowana, nie możesz jest teraz odkryć")
+                    print_grid(visible_grid, diff)
+                else:
+                    print("error, za dużo")
             else:
                 if 0 <= x <= max_x and 0 <= y <= max_y:
                     visible_grid, play, visited_cells = uncover_cells(grid, visible_grid, diff, (int(x), int(y)), visited_cells)
