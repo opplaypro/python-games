@@ -319,6 +319,10 @@ def player_guess(grid, diff):
                 c += 1
 
             print("error")
+            for row in visible_grid:
+                print(row)
+            for row in grid:
+                print(row)
             continue
 
 
