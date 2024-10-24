@@ -37,7 +37,7 @@ def change_numbers(grid, x, y):
 
 
 #   funcion sets every position to number of bombs near
-#   rewrite using less code if possible
+#   rewrite using less code if possible #createdby:opplaypro
 def numbers_near_bombs(grid, diff):
     #   IT WORKS !!! BEFORE CHANGING TEST IF IT WORKS THE SAME
     #   GRID = [[]]
