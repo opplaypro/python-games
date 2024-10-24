@@ -294,6 +294,8 @@ def player_guess(grid, diff):
                     visible_grid[x][y] = "F"
                 else:
                     print("error, nie ustawiono flagi")
+            else:
+                print("error, nie ustawiono flagi")
             print_grid(visible_grid, diff)
         elif guess[0].lower() == "koniec":
             r = 0
