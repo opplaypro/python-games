@@ -233,8 +233,9 @@ def player_guess(grid, diff):
     print_grid(visible_grid, diff)
 
     while play:
-        guess = input("Aby odgadnąć komórkę, wprowadź współrzędne 'x,y'\nJeżeli chcesz oznaczyć bombę, wpisz 'x,y,B'"
-                      "\nJeśli uważasz, że oznaczyłeś wszystkie bomby, wpisz 'koniec': ").split(",")
+        guess = input("Aby odgadnąć komórkę, wprowadź współrzędne 'x,y'\n"
+                      "Jeżeli chcesz oznaczyć bombę, wpisz 'x,y,B'\n"
+                      "Jeśli uważasz, że oznaczyłeś wszystkie bomby, wpisz 'koniec': ").split(",")
         os.system('cls')
 
         if len(guess) == 2:
@@ -358,7 +359,6 @@ def game():
     bomb_grid = set_bombs(diff)
     bomb_grid = numbers_near_bombs(bomb_grid, diff)
     player_guess(bomb_grid, diff)
-
 
 
 if __name__ == "__main__":
