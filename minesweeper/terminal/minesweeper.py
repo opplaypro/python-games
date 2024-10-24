@@ -351,8 +351,9 @@ def uncover_cells(grid, visible_grid, diff, guess, visited_cells):
         print("Ta komórka została oznaczona jako bomba, nie możesz jej teraz odkryć")
         play = True
     else:
-        visible_grid, visited_cells = show_cells_near(grid, visible_grid, diff, guess, visited_cells)
-        play = True
+        if 0 <= x <= [9, 29, 59][diff] and 0 <= y <= [9, 19, 44][diff]:
+            visible_grid, visited_cells = show_cells_near(grid, visible_grid, diff, guess, visited_cells)
+            play = True
 
     print_grid(visible_grid, diff)
 
