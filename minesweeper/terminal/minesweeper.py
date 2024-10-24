@@ -239,7 +239,7 @@ def print_grid(grid, diff):
 
 def player_guess(grid, diff):
     play = True
-    max_x, max_y = [9, 29, 59][diff], [9, 19, 44][diff]
+    max_y, max_x = [9, 29, 59][diff], [9, 19, 44][diff]
 
     visible_grid = [["_" for _ in range(max_x + 1)] for _ in range(max_y + 1)]
     print("Współrzędne miejsca wprowadzaj w formacie 'x, y'\nOznaczona bomba ma symbol 'F'")
@@ -287,8 +287,12 @@ def player_guess(grid, diff):
                 else:
                     print("error, za dużo")
         elif len(guess) == 3:
-            y = int(guess[0]) - 1
-            x = int(guess[1]) - 1
+            try:
+                y = int(guess[0]) - 1
+                x = int(guess[1]) - 1
+            except ValueError:
+                print("BŁĄD, ZŁE WSPÓŁRZĘDNE")
+                continue
             if guess[2].lower() == "b" or "b\n":
                 if visible_grid[x][y] == "F":
                     visible_grid[x][y] = "_"
@@ -344,6 +348,7 @@ def show_cells_near(grid, visible_grid, diff, guess, visited_cells):
 
 
 def uncover_cells(grid, visible_grid, diff, guess, visited_cells):
+    play = True
     x = guess[0]
     y = guess[1]
     if grid[x][y] == 9:
